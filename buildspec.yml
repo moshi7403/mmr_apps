@@ -2,17 +2,18 @@ version: 0.2
 
 phases:
   install:
-    runtime-version:
-      nodejs: 16
     commands:
-      - echo "Install phase: Node.js version 16 installed ( no actual installation required in this case)."
-
+      - echo Installing dependencies...
   build:
     commands:
-      - echo "Build phase: No build steps required, but this phase can be extended if needed."
-      - echo "Just uploading the index.html file, no actual build process for now."
-
+      - echo Building project...
+      - # Add your build commands here if any, like npm build
   post_build:
     commands:
-      - echo "Post-build phase: Uploading the index.html file to S3."
-      - aws s3 cp ./index.html s3://mmr-static-website-artifact-bucket-001/index.html
+      - echo Build completed.
+      - # You can add commands to test or package your application here
+
+artifacts:
+  files:
+    - '**/*'
+  discard-paths: no
