@@ -1,0 +1,19 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo "No installation needed, no dependencies."
+
+  build:
+    commands:
+      - echo "Building (or skipping) because this is a simple static site."
+
+  post_build:
+    commands:
+      - echo "No post-build steps needed."
+
+artifacts:
+  files:
+    - index.html
+  discard-paths: no
