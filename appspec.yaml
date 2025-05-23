@@ -3,7 +3,7 @@ Resources:
   - TargetService:
       Type: AWS::ECS::Service
       Properties:
-        TaskDefinition: "<TASK_DEFINITION>"
+        TaskDefinition: "REPLACE_WITH_TASK_DEFINITION"
         LoadBalancerInfo:
           ContainerName: "tollapp-bluegreen"
-          ContainerPort: 80
+          ContainerPort: 8080

@@ -1,7 +1,7 @@
 version: 0.2
 
 phases:
-  pre_build:
+  install:
     commands:
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password | docker login --username AWS --password-stdin $REPOSITORY_URI
@@ -11,23 +11,9 @@ phases:
       - echo Building Docker image...
       - docker build -t $REPOSITORY_URI:latest .
       - docker push $REPOSITORY_URI:latest
-      - echo Writing imagedefinitions.json file...
-      - printf '[{"name":"app","imageUri":"%s"}]' "$REPOSITORY_URI:latest" > imagedefinitions.json
-      - echo Writing appspec.yaml...
-      - |
-        cat <<EOF > appspec.yaml
-        version: 0.0
-        Resources:
-          - TargetService:
-              Type: AWS::ECS::Service
-              Properties:
-                TaskDefinition: "REPLACED_AT_DEPLOY"
-                LoadBalancerInfo:
-                  ContainerName: "app"
-                  ContainerPort: 80
-        EOF
+      - printf '{"ImageURI":"%s"}' $REPOSITORY_URI:latest > imagedefinitions.json
 
 artifacts:
   files:
-    - imagedefinitions.json
     - appspec.yaml
+    - imagedefinitions.json
