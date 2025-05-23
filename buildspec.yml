@@ -3,17 +3,30 @@ version: 0.2
 phases:
   install:
     commands:
-      - echo "No installation needed, no dependencies."
+      - echo "Install phase — no dependencies."
 
   build:
     commands:
-      - echo "Building (or skipping) because this is a simple static site."
+      - echo "Build phase — skipping for static content."
 
   post_build:
     commands:
-      - echo "No post-build steps needed."
+      - echo "Post-build — preparing deployment package."
+      - echo "Creating appspec.yaml..."
+      - |
+        cat <<EOF > appspec.yaml
+        version: 0.0
+        Resources:
+          - TargetService:
+              Type: AWS::ECS::Service
+              Properties:
+                TaskDefinition: "REPLACED_AT_DEPLOY"
+                LoadBalancerInfo:
+                  ContainerName: "nginx"
+                  ContainerPort: 80
+        EOF
 
 artifacts:
   files:
-    - index.html
-  discard-paths: no
+    - appspec.yaml
+    - imagedefinitions.json
